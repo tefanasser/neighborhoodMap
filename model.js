@@ -1,0 +1,17 @@
+var locations = ko.observableArray([
+    {name:"Princess Norah University",
+    lng:24.8464662,
+    lat:46.7225421},
+    {name:"Immam University",
+    lng:24.8159457,
+    lat:46.6871576},
+   {name:"King Saud University",
+    lng:24.7209018,
+    lat:46.6218633},
+    {name:"Prince Sulat University",
+    lng:24.7209018,
+    lat:46.6218633},
+   {name:"Al-Faisal University",
+    lng:24.7209018,
+    lat:46.6218633},
+]);

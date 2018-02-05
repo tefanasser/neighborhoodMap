@@ -33,6 +33,13 @@
         padding-left: 10px;
       }
     </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" type="text/javascript"></script>
+         <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAI_rZf0017k0pa0kxGHGcvJRcIUqfKVuI&callback=initMap">
+    </script>
+      <script src="model.js"></script>
+      <script src="app.js"></script>
+    
   </head>
   <body>
     <div class="pos-f-t">
@@ -54,35 +61,97 @@
     </button>
   </nav>
 </div>
-    <div id="map"></div>
+      <div id='map'>
+ 
+</div>
     <script>
+        var locations = ko.observableArray([
+    {name:"Princess Norah University",
+    postion:{ 
+    lat:24.8464662,
+    lng:46.7225421}},
+    {name:"Immam University",
+     postion:{ lat:24.8159457,
+    lng:46.6871576}},
+   {name:"King Saud University",
+    postion:{ lat:24.7162459,
+    lng:46.6169191}
+   },
+    {name:"Prince Sultan University",
+     postion:{ lat:24.7347468,
+    lng:46.6953868}
+   },
+   {name:"Al-Faisal University",
+    postion:{ lat:24.6643064,
+    lng:46.6737777}
+   },
+]);
+            
+          var markers=[];
+       
       function initMap() {
+           var largeInfoWindow= new google.maps.InfoWindow();
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
-          center: {lat: -34.397, lng: 150.644}
+          zoom: 11,
+          center: {lat: 24.7204081, lng: 46.6218638}
         });
-        var geocoder = new google.maps.Geocoder();
-        document.getElementById('submit').addEventListener('click', function() {
-          geocodeAddress(geocoder, map);
-        });
+          
+          for (i=0;i<locations().length;i++){
+          var marker= new google.maps.Marker({
+   position:locations()[i].postion,
+    map:map,
+    title:locations()[i].name,
+               id:i
+});
+markers.push(marker);
+marker.addListener('click',function(){
+    toggleBounce(this);
+    populateInfowindow(this,largeInfoWindow);
+   
+});
+
+          }}
+    
+
+      function toggleBounce(marker) {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
       }
-      function geocodeAddress(geocoder, resultsMap) {
-        var address = document.getElementById('address').value;
-        geocoder.geocode({'address': address}, function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-            resultsMap.setCenter(results[0].geometry.location);
-            //TODO: Insert code here to take the first result's formatted address, and LOCATION.
-            document.getElementById('firstComponent').innerHTML="The Formatted Address is:"+results[0].formatted_address;// PUT STUFF HERE
-            document.getElementById('secondComponent').innerHTML="The Location is"+results[0].geometry.location; // PUT STUFF HERE
-          } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+        
+ function populateInfowindow(marker,infoWindow) {
+
+     var searchTerm=marker.title;
+     var url= "https://enggg.wikipedia.org/w/api.php?action=opensearch&origin=*&search="+searchTerm+"&limit=1&namespace=0&format=json";
+     var info;
+     
+     $.ajax({
+ url: url,
+ dataType: 'json',
+ success: function( data ){
+        info=data[3][0];
+         },
+ error: function( data ) {
+alert( 'API ERROR' );
+ }
+     });
+      if (infoWindow.marker!=marker){
+         infoWindow.marker=marker;
+         infoWindow.setContent('<div><a href='+info+'>'+searchTerm+'</a></div>');
+         infoWindow.open(map,marker);
+         infoWindow.addListener('closeclick',function(){
+             infoWindow.setMarker(null);
+         });
+     
+    
+ }
           }
-        });
-      }
+     
+    
     </script>
-    <!--TODO: Insert your API Key in the below call to load the API.-->
-    <script async defer
-     src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAI_rZf0017k0pa0kxGHGcvJRcIUqfKVuI&callback=initMap">
-    </script>
+   
+      
   </body>
 </html>
