@@ -1,0 +1,55 @@
+<html>
+    <head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+
+    </head>
+<body>
+
+
+<h4>People</h4>
+<ul data-bind="foreach: uniList">
+    <li>
+        <span data-bind="text: name"> </span>
+    </li>
+</ul>
+<button data-bind="click: addPerson">Add</button>
+
+<script >
+
+function AppViewModel() {
+    var self = this;
+ 
+    self.uniList = ko.observableArray([
+        {name:"Princess Norah University",
+     lat:24.8464662,
+    lng:46.7225421},
+    {name:"Immam University",
+    lat:24.8159457,
+    lng:46.6871576},
+   {name:"King Saud University",
+   lat:24.7162459,
+    lng:46.6169191
+   },
+    {name:"Prince Sultan University",
+    lat:24.7347468,
+    lng:46.6953868
+   },
+   {name:"Al-Faisal University",
+    postion:{ lat:24.6643064,
+    lng:46.6737777}
+   }
+]);
+ 
+    self.addPerson = function() {
+        self.people.push({ name: "New at " + new Date() });
+    };
+ 
+    self.removePerson = function() {
+        self.people.remove(this);
+    }
+}
+ 
+ko.applyBindings(new AppViewModel());
+</script>
+</body>
+</html>
