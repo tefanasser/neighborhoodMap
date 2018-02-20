@@ -12,7 +12,6 @@
         <span data-bind="text: name"> </span>
     </li>
 </ul>
-<button data-bind="click: addPerson">Add</button>
 
 <script >
 
@@ -39,14 +38,6 @@ function AppViewModel() {
     lng:46.6737777}
    }
 ]);
- 
-    self.addPerson = function() {
-        self.people.push({ name: "New at " + new Date() });
-    };
- 
-    self.removePerson = function() {
-        self.people.remove(this);
-    }
 }
  
 ko.applyBindings(new AppViewModel());

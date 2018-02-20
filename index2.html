@@ -20,8 +20,7 @@
         </style>
     </head>
     <body>
-        <div id="container">
-</div>
+       
         <div class="container-responsive">
                 <div class="row">
                     <div class='col-3'>
@@ -35,8 +34,8 @@
                            
                         </div>
                         <div class="row">
-                         <ul data-bind="foreach: uniList">
-                                <li class='list-group-item' data-bind="text: name ,visble: show" ></li>
+                         <ul data-bind="foreach: filterList">
+                                <li class='list-group-item' data-bind="text: name ,visible:show ,click: $parent.clicked" ></li>
                             </ul>
                         </div>
                     </div>
