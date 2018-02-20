@@ -134,7 +134,7 @@ function markerclick() {
     populateInfowindow(this, largeInfoWindow);
 
 }
-
+// when name is clicked in list
 function nameclick(marker) {
     var largeInfoWindow = new google.maps.InfoWindow();
 
