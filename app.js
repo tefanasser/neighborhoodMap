@@ -42,6 +42,7 @@ var markers = [];
 var bounds;
 
 //viewmodel
+//live search functionality based on https://gist.github.com/hinchley/5973926
 var viewModel = {
     //input query to filter
     query: ko.observable(''),
