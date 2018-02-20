@@ -1,176 +1,48 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Neighborhood Map</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-      <link rel="stylesheet" href='styles.css'>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" type="text/javascript"></script>
-         <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAI_rZf0017k0pa0kxGHGcvJRcIUqfKVuI&callback=initMap">
-    </script>
-      <script src="model.js"></script>
-      <script src="app.js"></script>
-    
-  </head>
-  <body>
-      <div id="mySidenav" class="sidenav container-responsive">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-          <div class="input-group mb-3">
-              <h1 class='container'>Universities In Riyadh</h1>
-  <input type="text" class="form-control" placeholder="Type university name" aria-label="Recipient's username" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <button type="button" class="btn btn-primary">Filter</button>
-              </div>
-      <div class="container">
-      <ul id='univesities' class="list-group">
-      </div>
-         
-          </div>       
-</div>
-      <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
-      
-      <div id='map'>
- 
-</div>
-      <script>
-function openNav() {
-    document.getElementById("mySidenav").style.width = "30%";
-}
+    <head>
+        <title>Universies in Riyadh</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+<!--bootstrap-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--knockout-->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+<!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--Style sheet-->
+        <link rel="stylesheet" href='styles.css'>
+    </head>
+    <body>
+         <div class="wrapper">  
+        <nav id="sidebar">
+            <div class="container">
+                    <div class='row'>
+                        <input type="text" class="form-control" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" placeholder="Type name to filter" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="row">
+                         <ul data-bind="foreach: filterList">
+                            <li class='list-group-item' data-bind="text: name ,visible:show ,click: $parent.clicked" ></li>
+                        </ul>
+                    </div>
+            </div>
+             </nav>
+        <div class="container" >
+            <button  id="sidebarCollapse" class="btn navbar-btn" onclick="toogle()">☰</button>
+            <h3>Universities in Riyadh</h3>
+            <div id='map'></div>
+        </div>
+        </div>
+        <script>
+            function toogle(){
+                    $('#sidebar').toggleClass('active');
+            }
 
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-}
-</script>
-    <script>
-        
-        var viewModel = function(){
-  this.uni= ko.observableArray(
-        var locations = ko.observableArray([
-    {name:"Princess Norah University",
-    postion:{ 
-    lat:24.8464662,
-    lng:46.7225421}},
-    {name:"Immam University",
-     postion:{ lat:24.8159457,
-    lng:46.6871576}},
-   {name:"King Saud University",
-    postion:{ lat:24.7162459,
-    lng:46.6169191}
-   },
-    {name:"Prince Sultan University",
-     postion:{ lat:24.7347468,
-    lng:46.6953868}
-   },
-   {name:"Al-Faisal University",
-    postion:{ lat:24.6643064,
-    lng:46.6737777}
-   },
-])
-};
-
-ko.applyBindings(viewModel);
-        var locations = ko.observableArray([
-    {name:"Princess Norah University",
-    postion:{ 
-    lat:24.8464662,
-    lng:46.7225421}},
-    {name:"Immam University",
-     postion:{ lat:24.8159457,
-    lng:46.6871576}},
-   {name:"King Saud University",
-    postion:{ lat:24.7162459,
-    lng:46.6169191}
-   },
-    {name:"Prince Sultan University",
-     postion:{ lat:24.7347468,
-    lng:46.6953868}
-   },
-   {name:"Al-Faisal University",
-    postion:{ lat:24.6643064,
-    lng:46.6737777}
-   },
-]);
-
-            
-          var markers=[];
-       
-      function initMap() {
-           
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 11,
-          center: {lat: 24.7204081, lng: 46.6218638}
-        });
-          
-          
-          for (i=0;i<locations().length;i++){
-          var marker= new google.maps.Marker({
-   position:locations()[i].postion,
-    map:map,
-    title:locations()[i].name,
-               id:i
-});
-markers.push(marker);
-marker.addListener('click',function(){
-    markerclick(this);
-});
-   
-$('#univesities').append(
-    "<li class='list-group-item' onclick='markerclick(markers["+i+"])' id="+"'"+i+"'"+">"+locations()[i].name+"</li>");
-          }}
-function test(){
-    console.log('test');
-}
-        function markerclick(marker){
-            var largeInfoWindow= new google.maps.InfoWindow();
-    toggleBounce(marker);
-    populateInfowindow(marker,largeInfoWindow);
-   
-}
-      function toggleBounce(marker) {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-      }
-        
- function populateInfowindow(marker,infoWindow) {
-
-     var searchTerm=marker.title;
-     var url= "https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search="+searchTerm+"&limit=1&namespace=0&format=json";
-     var info;
-     
-     $.ajax({
- url: url,
- dataType: 'json',
- success: function( data ){
-        info=data[3][0];
-     if (infoWindow.marker!=marker){
-         infoWindow.marker=marker;
-         infoWindow.setContent('<div><a href='+info+'>'+searchTerm+'</a></div>');
-         infoWindow.open(map,marker);
-         infoWindow.addListener('closeclick',function(){
-             this.setMarker(null);
-         });
-     
-    
- }
-         },
- error: function() {
-alert( 'API ERROR' );
- }
-     });
-      
-          }
-     
-    
-    </script>
-   
-      
-  </body>
+        </script>
+<!--Java script file-->
+        <script src="app.js"></script>
+<!--Google Maps-->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAI_rZf0017k0pa0kxGHGcvJRcIUqfKVuI&callback=initMap"
+                                 onerror="mapError()">
+        </script>
+    </body>
 </html>
