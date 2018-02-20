@@ -48,7 +48,7 @@ var viewModel = {
     query: ko.observable(''),
     //uni name clicked from list
     clicked: function(value) {
-        markerclick(markers[value.index]);
+        nameclick(markers[value.index]);
     },
     //observable array to show and filter uni list
     filterList: ko.observableArray([]),
@@ -61,7 +61,7 @@ var viewModel = {
             markers[x].setMap(null);
         }
 //if the search query is empty show all names and markers
-        if (value == '') {
+        if (value === '') {
             for (var i in list) {
                 viewModel.filterList()[i].show(true);
                 markers[i].visible = true;
@@ -71,12 +71,12 @@ var viewModel = {
             return;
         }
         // show list and markers based on the query 
-        for (var i in list) {
-            if (list[i].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
+        for (var z in list) {
+            if (list[z].name.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
 
-                viewModel.filterList()[i].show(true);
-                markers[i].visible = true;
-                markers[i].setMap(map);
+                viewModel.filterList()[z].show(true);
+                markers[z].visible = true;
+                markers[z].setMap(map);
 
             }
         }
@@ -118,18 +118,24 @@ function initMap() {
         bounds.extend(marker.position);
         map.fitBounds(bounds);
         markers.push(marker);
-        marker.addListener('click', function() {
-            markerclick(this);
-        });
+        marker.addListener('click',markerclick);
+        
     }
-};
+}
 // onerror function for maps  
 function mapError() {
     alert('Google map error');
 }
 
 //when the marker is clicked bounce and show info window
-function markerclick(marker) {
+function markerclick() {
+    var largeInfoWindow = new google.maps.InfoWindow();
+
+    populateInfowindow(this, largeInfoWindow);
+
+}
+
+function nameclick(marker) {
     var largeInfoWindow = new google.maps.InfoWindow();
 
     populateInfowindow(marker, largeInfoWindow);
