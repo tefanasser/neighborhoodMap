@@ -20,7 +20,7 @@ By Latifa Almulhem
 - udacity Front-End lessons 
 - konckout live search : https://gist.github.com/hinchley/5973926
 - sidebar: https://bootstrapious.com/p/bootstrap-sidebar
--inspiration from other students work :
---https://github.com/ddavignon/neighborhood-map
---https://github.com/gmawji/neighborhood-map
+- inspiration from other students work :
+1-https://github.com/ddavignon/neighborhood-map
+2-https://github.com/gmawji/neighborhood-map
 
