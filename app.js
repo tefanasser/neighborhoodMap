@@ -40,6 +40,7 @@ var list = [{
 var map;
 var markers = [];
 var bounds;
+var infoWindows=[];
 
 //viewmodel
 //live search functionality based on https://gist.github.com/hinchley/5973926
@@ -130,26 +131,37 @@ function mapError() {
 //when the marker is clicked bounce and show info window
 function markerclick() {
     var largeInfoWindow = new google.maps.InfoWindow();
-
+    infoWindows.push(largeInfoWindow);
     populateInfowindow(this, largeInfoWindow);
 
+}
+
+function learinfowindows(){
+    for (var i in infoWindows)
+    infoWindows[i].close();
 }
 // when name is clicked in list
 function nameclick(marker) {
     var largeInfoWindow = new google.maps.InfoWindow();
-
+    infoWindows.push(largeInfoWindow);
     populateInfowindow(marker, largeInfoWindow);
 
 }
+
 
 function toggleBounce(marker) {
     if (marker.getAnimation()) {
         marker.setAnimation(null);
     } else {
+        clearanimation();
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
 }
 
+function clearanimation (){
+    for (var i in markers)
+    markers[i].setAnimation(null);
+}
 function populateInfowindow(marker, infoWindow) {
     toggleBounce(marker);
  // wikipedia api 
@@ -165,6 +177,7 @@ function populateInfowindow(marker, infoWindow) {
             if (infoWindow.marker != marker) {
                 infoWindow.marker = marker;
                 infoWindow.setContent('<div><a href=' + info + '>' + searchTerm + '</a></div>');
+                learinfowindows();
                 infoWindow.open(map, marker);
                 infoWindow.addListener('closeclick', function() {
                     //marker.setMarker(null);
