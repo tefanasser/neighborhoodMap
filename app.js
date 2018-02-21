@@ -136,7 +136,7 @@ function markerclick() {
 
 }
 
-function learinfowindows(){
+function clearinfowindows(){
     for (var i in infoWindows)
     infoWindows[i].close();
 }
@@ -177,7 +177,7 @@ function populateInfowindow(marker, infoWindow) {
             if (infoWindow.marker != marker) {
                 infoWindow.marker = marker;
                 infoWindow.setContent('<div><a href=' + info + '>' + searchTerm + '</a></div>');
-                learinfowindows();
+                clearinfowindows();
                 infoWindow.open(map, marker);
                 infoWindow.addListener('closeclick', function() {
                     //marker.setMarker(null);
